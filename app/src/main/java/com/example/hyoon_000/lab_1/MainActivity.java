@@ -22,9 +22,8 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
     private Sensor mLight, mMagnetic, mRotation, mAccelerometer; //Finding all the labels on the activity
-    private LineGraphView graph;
     TextView lightText, magneticText, rotationText, accText;
-
+    LineGraphView graph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +33,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         magneticText = (TextView)findViewById(R.id.magneticfield);
         rotationText = (TextView)findViewById(R.id.rotationfield);
         accText = (TextView)findViewById(R.id.accText);
-        //part using the graph
-        LinearLayout layout = ((LinearLayout)findViewById(R.id.layout));
+        RelativeLayout layout = ((RelativeLayout)findViewById(R.id.layout));
         graph = new LineGraphView(getApplicationContext(),
                 100,
                 Arrays.asList("x", "y", "z"));
@@ -53,40 +51,65 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
-        DecimalFormat df = new DecimalFormat("#.####");
+        float accXMax=0, accYMax=0, accZMax=0, rotationXMax=0,rotationYMax=0,rotationZMax=0, magXMax=0, magYMax=0, magZMax=0;
+        DecimalFormat df = new DecimalFormat("#.##");
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) { //Accelerometer data
             float accX = event.values[0]; //Obtaining the X,Y,Z data for the accelerometer
+            df.format(accX);//Rounding up all the numbers
+            if (Math.abs(accX) > accXMax) {
+                accXMax = accX;
+            }
             float accY = event.values[1];
-            float accZ = event.values[2];
-            df.format(accX);//Rounding up all the numbesr
             df.format(accY);
+            if (Math.abs(accY) > accYMax) {
+                accYMax = accY;
+            }
+            float accZ = event.values[2];
             df.format(accZ);
-            /*String accDataX = Float.toString(accX); //Formatting the float to a string
-            String accDataY = Float.toString(accY);
-            String accDataZ = Float.toString(accZ);*/
-            accText.setText("Accelerometer X:" + accX + "  Y:" + accY + "  Z:" + accZ);
+            if (Math.abs(accZ) > accZMax) {
+                accZMax = accZ;
+            }
+            graph.addPoint(event.values);
+            accText.setText("AccX:" + accX + " Record:" + accXMax + "  Y:" + accY + " Record:" + accYMax + "  Z:" + accZ + " Record:" + accZMax);
         }else if (sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) { //Rotational data
             float rotationX = event.values[0];
-            float rotationY = event.values[1];
-            float rotationZ = event.values[2];
             df.format(rotationX);
+            if (Math.abs(rotationX) > rotationXMax) {
+                rotationXMax = rotationX;
+            }
+            float rotationY = event.values[1];
             df.format(rotationY);
+            if (Math.abs(rotationY) > rotationYMax) {
+                rotationYMax = rotationY;
+            }
+            float rotationZ = event.values[2];
             df.format(rotationZ);
-            rotationText.setText("Rotation X:" + rotationX + "  Y:" + rotationY + "  Z:" + rotationZ);
+            if (Math.abs(rotationZ) > rotationZMax) {
+                rotationZMax = rotationZ;
+            }
+            rotationText.setText("Rot X:" + rotationX + " Record:" + rotationXMax + "  Y:" + rotationY + " Record:" + rotationYMax +"  Z:" + rotationZ + " Record:" + rotationZMax);
         }else if (sensor.getType() == Sensor.TYPE_LIGHT) { //Light intensity data
             float light = event.values[0];
             df.format(light);
             String Lux = Float.toString(light); //Convert the float into a string to output it to a textfield
             lightText.setText("Light Intensity Lux " + Lux);
         }else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-
             float magneticX = event.values[0];
-            float magneticY = event.values[1];
-            float magneticZ = event.values[2];
             df.format(magneticX);
+            if (Math.abs(magneticX) > magXMax) {
+                magXMax = magneticX;
+            }
+            float magneticY = event.values[1];
             df.format(magneticY);
+            if (Math.abs(magneticY) > magYMax) {
+                magYMax = magneticY;
+            }
+            float magneticZ = event.values[2];
             df.format(magneticZ);
-            magneticText.setText("Magnetic Field X:" + magneticX + "  Y:" + magneticY + "  Z:" + magneticZ);
+            if (Math.abs(magneticX) > magZMax) {
+                magZMax = magneticX;
+            }
+            magneticText.setText("Mag Field X:" + magneticX + " Record:" + magXMax + "  Y:" + magneticY + " Record:" + magYMax +"  Z:" + magneticZ + " Record:" + magZMax);
         }
     }
 
@@ -110,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this);
     }
 
-    public static class PlaceholderFragment extends Fragment {
+  /*  public class PlaceholderFragment extends Fragment {
+        private LineGraphView graph;
+
         public PlaceholderFragment() {
         }
         @Override
@@ -119,10 +144,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             View rootView = inflater.inflate(R.layout.fragment_main, container,false);
             LinearLayout l = (LinearLayout)rootView.findViewById(R.id.frag_layout);
             l.setOrientation(LinearLayout.VERTICAL);
+            graph = new LineGraphView(getApplicationContext(),
+                    100,
+                    Arrays.asList("x", "y", "z"));
+            l.addView(graph);
+            graph.setVisibility(View.VISIBLE);
             return rootView;
         }
-    }
-
-
-
+    }*/
 }
