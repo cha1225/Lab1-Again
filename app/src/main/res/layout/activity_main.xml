@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/lighttextfield"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:text="Light Intensity (Lux):"
         android:layout_above="@+id/magneticfield"
         android:layout_alignParentStart="true"
@@ -36,7 +36,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/magneticfield"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:layout_above="@+id/rotationfield"
         android:layout_alignParentStart="true" />
 
@@ -46,7 +46,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/rotationfield"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:layout_above="@+id/accText"
         android:layout_alignParentStart="true" />
 
@@ -56,7 +56,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/accText"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="40dp" />

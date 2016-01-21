@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mLight, mMagnetic, mRotation, mAccelerometer; //Finding all the labels on the activity
     TextView lightText, magneticText, rotationText, accText;
     LineGraphView graph;
-
+    DecimalFormat df = new DecimalFormat("#.##");
+    float accXMax=0, accYMax=0, accZMax=0, rotationXMax=0,rotationYMax=0,rotationZMax=0, magXMax=0, magYMax=0, magZMax=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,43 +52,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
-        float accXMax=0, accYMax=0, accZMax=0, rotationXMax=0,rotationYMax=0,rotationZMax=0, magXMax=0, magYMax=0, magZMax=0;
-        DecimalFormat df = new DecimalFormat("#.##");
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) { //Accelerometer data
             float accX = event.values[0]; //Obtaining the X,Y,Z data for the accelerometer
-            df.format(accX);//Rounding up all the numbers
-            if (Math.abs(accX) > accXMax) {
+            if (Math.abs(accX) > Math.abs(accXMax)) {
                 accXMax = accX;
             }
             float accY = event.values[1];
-            df.format(accY);
-            if (Math.abs(accY) > accYMax) {
+            if (Math.abs(accY) > Math.abs(accYMax)) {
                 accYMax = accY;
             }
             float accZ = event.values[2];
-            df.format(accZ);
-            if (Math.abs(accZ) > accZMax) {
+            if (Math.abs(accZ) > Math.abs(accZMax)) {
                 accZMax = accZ;
             }
             graph.addPoint(event.values);
-            accText.setText("AccX:" + accX + " Record:" + accXMax + "  Y:" + accY + " Record:" + accYMax + "  Z:" + accZ + " Record:" + accZMax);
+            accText.setText("AccX:" + df.format(accX) + " Record:" + df.format(accXMax) + "  Y:" + df.format(accY) + " Record:" + df.format(accYMax) + "  Z:" + df.format(accZ) + " Record:" + df.format(accZMax));
         }else if (sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) { //Rotational data
-            float rotationX = event.values[0];
-            df.format(rotationX);
+            float rotationX = event.values[0];;
             if (Math.abs(rotationX) > rotationXMax) {
                 rotationXMax = rotationX;
             }
             float rotationY = event.values[1];
-            df.format(rotationY);
             if (Math.abs(rotationY) > rotationYMax) {
                 rotationYMax = rotationY;
             }
             float rotationZ = event.values[2];
-            df.format(rotationZ);
             if (Math.abs(rotationZ) > rotationZMax) {
                 rotationZMax = rotationZ;
             }
-            rotationText.setText("Rot X:" + rotationX + " Record:" + rotationXMax + "  Y:" + rotationY + " Record:" + rotationYMax +"  Z:" + rotationZ + " Record:" + rotationZMax);
+            rotationText.setText("Rot X:" + df.format(rotationX) + " Record:" + df.format(rotationXMax) + "  Y:" + df.format(rotationY) + " Record:" + df.format(rotationYMax) +"  Z:" + df.format(rotationZ) + " Record:" + df.format(rotationZMax));
         }else if (sensor.getType() == Sensor.TYPE_LIGHT) { //Light intensity data
             float light = event.values[0];
             df.format(light);
@@ -95,21 +88,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             lightText.setText("Light Intensity Lux " + Lux);
         }else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             float magneticX = event.values[0];
-            df.format(magneticX);
             if (Math.abs(magneticX) > magXMax) {
                 magXMax = magneticX;
             }
             float magneticY = event.values[1];
-            df.format(magneticY);
             if (Math.abs(magneticY) > magYMax) {
                 magYMax = magneticY;
             }
             float magneticZ = event.values[2];
-            df.format(magneticZ);
             if (Math.abs(magneticX) > magZMax) {
                 magZMax = magneticX;
             }
-            magneticText.setText("Mag Field X:" + magneticX + " Record:" + magXMax + "  Y:" + magneticY + " Record:" + magYMax +"  Z:" + magneticZ + " Record:" + magZMax);
+            magneticText.setText("Mag Field X:" + df.format(magneticX) + " Record:" + df.format(magXMax) + "  Y:" + df.format(magneticY) + " Record:" + df.format(magYMax) +"  Z:" + df.format(magneticZ) + " Record:" + df.format(magZMax));
         }
     }
 
